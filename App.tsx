@@ -221,9 +221,9 @@ export default function App() {
     }
 
     // Common Button Drawer
-    const drawTouchButton = (label: string, timeRef: number) => {
+    const drawTouchButton = (label: string, timeRef: number, yOffset: number = 0) => {
         const cx = width / 2;
-        const cy = height / 2 + 60; // Push down to avoid overlapping header
+        const cy = height / 2 + yOffset; // Use dynamic offset
         const radius = 80;
         const pulse = 1 + Math.sin(time / 200) * 0.1;
 
@@ -269,11 +269,13 @@ export default function App() {
 
     // --- GAME STATE LOGIC ---
     if (gameStateRef.current === GameState.MENU) {
-        if (drawTouchButton("开始", menuTimeRef.current)) {
+        // Start button low (+60)
+        if (drawTouchButton("开始", menuTimeRef.current, 60)) {
             startGame();
         }
     } else if (gameStateRef.current === GameState.GAME_OVER) {
-        if (drawTouchButton("再玩一次", gameOverTimeRef.current)) {
+        // Play Again button high (-80) to avoid overlapping with rank card
+        if (drawTouchButton("再玩一次", gameOverTimeRef.current, -80)) {
             startGame();
         }
     } else if (gameStateRef.current === GameState.PLAYING) {
