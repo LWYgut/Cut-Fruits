@@ -6,7 +6,7 @@ import { generateGameFeedback } from './services/geminiService';
 
 // Constants
 const GRAVITY = 0.25;
-const GAME_DURATION = 3;
+const GAME_DURATION = 60;
 const FRUIT_RADIUS = 70; 
 const FRUIT_FONT_SIZE = "110px serif"; 
 const FRUITS = [
