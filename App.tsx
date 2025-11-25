@@ -148,8 +148,16 @@ export default function App() {
     const y = height + FRUIT_RADIUS; 
     
     const targetX = width / 2 + (Math.random() - 0.5) * (width / 2);
-    const flightTime = 60; 
-    const vy = -18 - Math.random() * 7; 
+    
+    // Constant random flight time (horizontal speed control)
+    // 55 to 65 frames to reach center height. Consistent pace.
+    const flightTime = 55 + Math.random() * 10;
+    
+    // Vertical Velocity (Upwards is negative)
+    // Range: -12 (lowest throw) to -16 (highest throw)
+    // This is significantly slower than previous max (-23) and safer than prev base (-18).
+    const vy = -12 - Math.random() * 4; 
+    
     const vx = (targetX - x) / flightTime;
 
     const fruitData = FRUITS[Math.floor(Math.random() * FRUITS.length)];
