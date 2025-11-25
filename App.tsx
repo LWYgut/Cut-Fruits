@@ -154,9 +154,9 @@ export default function App() {
     const flightTime = 55 + Math.random() * 10;
     
     // Vertical Velocity (Upwards is negative)
-    // Range: -12 (lowest throw) to -16 (highest throw)
-    // This is significantly slower than previous max (-23) and safer than prev base (-18).
-    const vy = -12 - Math.random() * 4; 
+    // Range: -15 (mid-screen) to -21 (high screen)
+    // Increased from previous values to ensure fruits don't stay at the bottom.
+    const vy = -15 - Math.random() * 6; 
     
     const vx = (targetX - x) / flightTime;
 
