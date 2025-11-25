@@ -54,9 +54,9 @@ const GameOverlay: React.FC<GameOverlayProps> = ({
     <div className="absolute inset-0 flex flex-col justify-between items-center z-20 pointer-events-none p-4 md:p-8 h-screen overflow-hidden">
       
       {/* TOP SECTION */}
-      <div className="w-full flex flex-col items-center pt-4 md:pt-8">
+      <div className="w-full flex flex-col items-center pt-2 md:pt-4 gap-2 md:gap-3">
         {gameState === GameState.MENU && (
-          <div className="text-center animate-fade-in-down flex flex-col items-center gap-4 md:gap-6">
+          <div className="text-center animate-fade-in-down flex flex-col items-center gap-2">
             <h1 className="text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 filter drop-shadow-[0_0_25px_rgba(168,85,247,0.6)] tracking-tight leading-none">
               霓虹<br/>切水果
             </h1>
@@ -68,7 +68,7 @@ const GameOverlay: React.FC<GameOverlayProps> = ({
                  <span className={`block w-2 h-2 md:w-3 md:h-3 rounded-full ${hasHand ? 'bg-green-500' : 'bg-yellow-500'} relative`}></span>
               </div>
               <span className={`text-xs md:text-sm font-mono font-bold uppercase tracking-wider ${hasHand ? 'text-green-400' : 'text-yellow-400'}`}>
-                {hasHand ? "系统就绪 :: 食指已锁定" : "系统扫描中 :: 请举起右手"}
+                {hasHand ? "系统就绪 :: 食指已锁定" : "系统扫描中 :: 请举起食指"}
               </span>
             </div>
           </div>
@@ -76,16 +76,16 @@ const GameOverlay: React.FC<GameOverlayProps> = ({
 
         {gameState === GameState.GAME_OVER && (
           <div className="text-center w-full max-w-4xl animate-fade-in-down">
-             <h2 className="text-5xl md:text-6xl font-black text-white mb-4 md:mb-6 drop-shadow-[0_0_25px_rgba(255,255,255,0.5)] tracking-tight">GAME OVER</h2>
+             <h2 className="text-5xl md:text-6xl font-black text-white mb-2 drop-shadow-[0_0_25px_rgba(255,255,255,0.5)] tracking-tight">GAME OVER</h2>
              
              <div className="flex justify-center gap-4 w-full px-4">
                 {/* Result Stat Card 1 */}
-                <div className="bg-slate-900/60 border border-white/10 p-4 rounded-2xl backdrop-blur-xl shadow-2xl flex-1 max-w-[200px] group">
+                <div className="bg-slate-900/60 border border-white/10 p-3 md:p-4 rounded-2xl backdrop-blur-xl shadow-2xl flex-1 max-w-[200px] group">
                     <div className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1 group-hover:text-purple-400 transition-colors">最终得分</div>
                     <div className="text-3xl md:text-4xl font-black text-yellow-400 drop-shadow-md">{gameResult?.score}</div>
                 </div>
                 {/* Result Stat Card 2 */}
-                <div className="bg-slate-900/60 border border-white/10 p-4 rounded-2xl backdrop-blur-xl shadow-2xl flex-1 max-w-[200px] group">
+                <div className="bg-slate-900/60 border border-white/10 p-3 md:p-4 rounded-2xl backdrop-blur-xl shadow-2xl flex-1 max-w-[200px] group">
                     <div className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1 group-hover:text-cyan-400 transition-colors">命中率</div>
                     <div className="text-3xl md:text-4xl font-black text-cyan-400 drop-shadow-md">
                         {Math.round(((gameResult?.fruitsSliced || 0) / ((gameResult?.fruitsSliced || 1) + (gameResult?.bombsHit || 0))) * 100)}%
@@ -98,7 +98,7 @@ const GameOverlay: React.FC<GameOverlayProps> = ({
 
       {/* CENTER SECTION IS LEFT EMPTY FOR CANVAS BUTTONS */}
       {/* Visual spacer to ensure we know this area is claimed by the canvas layer */}
-      <div className="flex-grow min-h-[160px] md:min-h-[220px]"></div>
+      <div className="flex-grow min-h-[160px] md:min-h-[200px]"></div>
 
       {/* BOTTOM SECTION */}
       <div className="w-full flex flex-col items-center justify-end pb-4 md:pb-8">

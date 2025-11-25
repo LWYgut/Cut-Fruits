@@ -215,7 +215,7 @@ export default function App() {
     // Common Button Drawer
     const drawTouchButton = (label: string, timeRef: number) => {
         const cx = width / 2;
-        const cy = height / 2;
+        const cy = height / 2 + 60; // Push down to avoid overlapping header
         const radius = 80;
         const pulse = 1 + Math.sin(time / 200) * 0.1;
 
