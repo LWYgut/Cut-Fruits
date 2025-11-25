@@ -190,13 +190,13 @@ export default function App() {
   const update = useCallback((time: number) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d', { alpha: false }); // Optimize for no alpha on background
+    const ctx = canvas.getContext('2d', { alpha: true }); 
     if (!ctx) return;
 
     const width = canvas.width;
     const height = canvas.height;
 
-    // Clear Canvas (Optimization: Use fillRect with background color if opaque, but we need transparent for gradient div behind)
+    // Clear Canvas with transparency to show CSS background
     ctx.clearRect(0, 0, width, height);
 
     // Current Finger Position
@@ -223,22 +223,26 @@ export default function App() {
         ctx.translate(cx, cy);
         ctx.scale(pulse, pulse);
         
-        // Shadow is expensive, only apply to the stroke
-        ctx.shadowBlur = 20;
-        ctx.shadowColor = isHandDetected ? '#a855f7' : '#475569';
+        // Glow effect
+        ctx.shadowBlur = 30;
+        ctx.shadowColor = isHandDetected ? '#c084fc' : '#475569';
         
         ctx.beginPath();
         ctx.arc(0, 0, radius, 0, Math.PI * 2);
-        ctx.fillStyle = isHandDetected ? '#a855f7' : '#334155';
+        // Gradient fill for button
+        const grad = ctx.createRadialGradient(0,0,0, 0,0, radius);
+        grad.addColorStop(0, isHandDetected ? '#7e22ce' : '#1e293b');
+        grad.addColorStop(1, isHandDetected ? '#581c87' : '#0f172a');
+        ctx.fillStyle = grad;
         ctx.fill();
         
-        ctx.lineWidth = 4;
-        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = isHandDetected ? '#d8b4fe' : '#334155';
         ctx.stroke();
 
         ctx.shadowBlur = 0; // Turn off shadow for text to save perf
         ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 36px sans-serif';
+        ctx.font = 'bold 36px "Exo 2", sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(label, 0, 0);
@@ -419,7 +423,7 @@ export default function App() {
     
     // 4. Floating Texts (No shadow for perf)
     ctx.shadowBlur = 0;
-    ctx.font = "bold 40px sans-serif";
+    ctx.font = "bold 40px 'Exo 2', sans-serif";
     floatingTexts.current.forEach(t => {
         ctx.save();
         ctx.globalAlpha = t.life;
@@ -485,6 +489,10 @@ export default function App() {
 
   // Start Loop on Mount
   useEffect(() => {
+    // IMPORTANT: Reset context with alpha: true for CSS background visibility
+    if (canvasRef.current) {
+        // Just triggering a resize to ensure context is ready
+    }
     frameId.current = requestAnimationFrame(() => update(performance.now()));
     return () => cancelAnimationFrame(frameId.current);
   }, [update]);
@@ -564,16 +572,34 @@ export default function App() {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full h-screen bg-slate-900 overflow-hidden cursor-none select-none">
-      <div className="absolute inset-0 opacity-10 pointer-events-none" 
-           style={{ 
-             backgroundImage: 'linear-gradient(#4f46e5 1px, transparent 1px), linear-gradient(90deg, #4f46e5 1px, transparent 1px)', 
-             backgroundSize: '40px 40px' 
-           }}>
+    <div ref={containerRef} className="relative w-full h-screen bg-slate-950 overflow-hidden cursor-none select-none font-sans">
+      
+      {/* --- NEW ANIMATED BACKGROUND --- */}
+      <div className="absolute inset-0 z-[-3] overflow-hidden">
+          {/* Deep Space Base */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0f172a] via-[#1e1b4b] to-[#312e81]"></div>
+
+          {/* Animated Aurora Blobs */}
+          <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-purple-600/30 rounded-full blur-[80px] animate-blob mix-blend-screen opacity-70"></div>
+          <div className="absolute top-[30%] right-[-10%] w-[40vw] h-[40vw] bg-cyan-500/20 rounded-full blur-[80px] animate-blob animation-delay-2000 mix-blend-screen opacity-70"></div>
+          <div className="absolute bottom-[-20%] left-[20%] w-[60vw] h-[60vw] bg-pink-600/20 rounded-full blur-[80px] animate-blob animation-delay-4000 mix-blend-screen opacity-60"></div>
+
+          {/* Holographic Grid Floor */}
+          <div className="absolute inset-0" 
+               style={{
+                   backgroundImage: "linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px)", 
+                   backgroundSize: "60px 60px",
+                   maskImage: "radial-gradient(circle at center, black 0%, transparent 85%)",
+                   WebkitMaskImage: "radial-gradient(circle at center, black 0%, transparent 85%)"
+               }}>
+          </div>
+          
+          {/* Subtle Noise Texture for high-end feel */}
+          <div className="absolute inset-0 opacity-[0.03]" style={{backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`}}></div>
       </div>
       
       {/* Flash overlay for bomb hits */}
-      <div id="flash-overlay" className="absolute inset-0 bg-white opacity-0 pointer-events-none transition-opacity duration-100 z-50"></div>
+      <div id="flash-overlay" className="absolute inset-0 bg-white opacity-0 pointer-events-none transition-opacity duration-100 z-50 mix-blend-overlay"></div>
 
       {/* Active in Menu AND Playing for detection */}
       <MotionEngine 
