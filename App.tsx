@@ -6,7 +6,7 @@ import { generateGameFeedback } from './services/geminiService';
 
 // Constants
 const GRAVITY = 0.25;
-const GAME_DURATION = 60;
+const GAME_DURATION = 3;
 const FRUIT_RADIUS = 70; 
 const FRUIT_FONT_SIZE = "110px serif"; 
 const FRUITS = [
@@ -549,6 +549,10 @@ export default function App() {
 
   const endGame = async () => {
     setGameState(GameState.GAME_OVER);
+    
+    // Clear all game objects immediately for a clean Game Over screen
+    entities.current = [];
+    slicedFruits.current = [];
     
     const result: GameResult = {
         score: scoreRef.current,
