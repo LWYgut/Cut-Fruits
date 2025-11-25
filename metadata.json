@@ -1,0 +1,7 @@
+{
+  "name": "Cut Fruits",
+  "description": "A motion-controlled fruit slicing game using your webcam and computer vision.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
