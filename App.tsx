@@ -274,8 +274,8 @@ export default function App() {
             startGame();
         }
     } else if (gameStateRef.current === GameState.GAME_OVER) {
-        // Play Again button high (-80) to avoid overlapping with rank card
-        if (drawTouchButton("再玩一次", gameOverTimeRef.current, -80)) {
+        // Play Again button adjusted (-30) to center between stats (top) and rank (bottom)
+        if (drawTouchButton("再玩一次", gameOverTimeRef.current, -30)) {
             startGame();
         }
     } else if (gameStateRef.current === GameState.PLAYING) {
